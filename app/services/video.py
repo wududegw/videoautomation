@@ -9,16 +9,28 @@ import subprocess
 from contextlib import redirect_stdout
 from typing import List
 from loguru import logger
-from moviepy import (
-    AudioFileClip,
-    ColorClip,
-    CompositeAudioClip,
-    CompositeVideoClip,
-    ImageClip,
-    TextClip,
-    VideoFileClip,
-    afx,
-)
+try:
+    from moviepy import (
+        AudioFileClip,
+        ColorClip,
+        CompositeAudioClip,
+        CompositeVideoClip,
+        ImageClip,
+        TextClip,
+        VideoFileClip,
+        afx,
+    )
+except ImportError:
+    from moviepy.editor import (
+        AudioFileClip,
+        ColorClip,
+        CompositeAudioClip,
+        CompositeVideoClip,
+        ImageClip,
+        TextClip,
+        VideoFileClip,
+        afx,
+    )
 from moviepy.video.tools.subtitles import SubtitlesClip
 from PIL import Image, ImageFont
 

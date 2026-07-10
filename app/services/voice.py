@@ -1568,7 +1568,10 @@ def siliconflow_tts(
                 # 获取音频文件的实际长度
                 try:
                     # 尝试使用moviepy获取音频长度
-                    from moviepy import AudioFileClip
+                    try:
+                        from moviepy import AudioFileClip
+                    except ImportError:
+                        from moviepy.editor import AudioFileClip
 
                     audio_clip = AudioFileClip(voice_file)
                     audio_duration = audio_clip.duration

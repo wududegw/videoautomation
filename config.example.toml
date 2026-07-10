@@ -230,8 +230,6 @@ endpoint = ""
 # material_directory = "/user/harry/videos"  #表示将视频素材下载到指定的文件夹中
 # material_directory = "task"                #表示将视频素材下载到当前任务的文件夹中，这种方式无法共享已经下载的视频素材
 
-material_directory = ""
-
 # Used for state management of the task
 enable_redis = false
 redis_host = "localhost"
@@ -290,6 +288,10 @@ api_key = ""
 # 是否隐藏日志信息
 # Whether to hide logs in the UI
 hide_log = false
+
+# Ngôn ngữ giao diện mặc định. Dùng "vi" cho tiếng Việt.
+# Default UI language. Use "vi" for Vietnamese.
+language = "vi"
 
 # 字幕位置设置 (Subtitle position settings)
 # 可选值 (Available values): "top", "center", "bottom", "custom"

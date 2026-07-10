@@ -1,4 +1,8 @@
-from moviepy import Clip, ColorClip, CompositeVideoClip, vfx
+try:
+    from moviepy import Clip, ColorClip, CompositeVideoClip, vfx
+except ImportError:
+    from moviepy.Clip import Clip
+    from moviepy.editor import ColorClip, CompositeVideoClip, vfx
 
 
 # FadeIn

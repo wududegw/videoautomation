@@ -1,3 +1,56 @@
+# moneyphanhoang — Video Automation tiếng Việt
+
+Bản Việt hóa/nâng cấp từ MoneyPrinterTurbo, tối ưu để người Việt clone về có thể cài đặt và chạy WebUI tạo video tự động.
+
+## Clone về chạy ngay trên Windows
+
+```powershell
+git clone https://github.com/wududegw/videoautomation.git
+Set-Location videoautomation
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install --upgrade pip
+pip install -r requirements.txt
+Copy-Item config.example.toml config.toml
+.\webui.bat
+```
+
+Sau đó mở trình duyệt:
+
+```text
+http://localhost:8501
+```
+
+## Cài bằng uv
+
+```powershell
+git clone https://github.com/wududegw/videoautomation.git
+Set-Location videoautomation
+uv sync --frozen
+Copy-Item config.example.toml config.toml
+uv run streamlit run webui/Main.py
+```
+
+## Cấu hình API key
+
+Copy `config.example.toml` thành `config.toml`, sau đó điền các key cần dùng:
+
+- `gemini_api_key`, `openai_api_key`, hoặc provider LLM khác.
+- `pexels_api_keys`, `pixabay_api_keys`, `coverr_api_keys`, `videvo_api_keys` nếu dùng nguồn video online.
+- Nếu dùng clip riêng, chọn **Local file** trong WebUI hoặc cấu hình `material_directory`.
+
+> [!IMPORTANT]
+> Không commit hoặc chia sẻ `config.toml` nếu đã điền API key thật.
+
+## Ghi chú bản Việt hóa
+
+- Giao diện mặc định tiếng Việt.
+- Tên WebUI: `moneyphanhoang`.
+- Có chế độ video dài.
+- Có fallback tương thích MoviePy 1.x/2.x, nhưng khuyến nghị cài đúng dependency bằng `requirements.txt` hoặc `uv sync --frozen`.
+
+---
+
 <div align="center">
 <h1 align="center">MoneyPrinterTurbo 💸</h1>
 

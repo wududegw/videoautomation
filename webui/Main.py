@@ -27,16 +27,15 @@ from app.services import task as tm
 from app.utils import utils
 
 st.set_page_config(
-    page_title="MoneyPrinterTurbo",
+    page_title="moneyphanhoang",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="auto",
     menu_items={
         "Report a bug": "https://github.com/harry0703/MoneyPrinterTurbo/issues",
-        "About": "# MoneyPrinterTurbo\nSimply provide a topic or keyword for a video, and it will "
-        "automatically generate the video copy, video materials, video subtitles, "
-        "and video background music before synthesizing a high-definition short "
-        "video.\n\nhttps://github.com/harry0703/MoneyPrinterTurbo",
+        "About": "# moneyphanhoang\nBản Việt hóa/nâng cấp từ MoneyPrinterTurbo: tự động tạo kịch bản, "
+        "tìm/tải tư liệu video, tạo phụ đề, lồng tiếng và ghép thành video.\n\n"
+        "Fork gốc: https://github.com/harry0703/MoneyPrinterTurbo",
     },
 )
 
@@ -67,7 +66,7 @@ if "video_script" not in st.session_state:
 if "video_terms" not in st.session_state:
     st.session_state["video_terms"] = ""
 if "ui_language" not in st.session_state:
-    st.session_state["ui_language"] = config.ui.get("language", system_locale)
+    st.session_state["ui_language"] = config.ui.get("language", "vi") or system_locale
 if "local_video_materials" not in st.session_state:
     # 记住用户最近一次已经落盘的本地素材，避免仅修改文案后二次生成时丢失素材列表。
     st.session_state["local_video_materials"] = []
@@ -79,7 +78,7 @@ locales = utils.load_locales(i18n_dir)
 title_col, lang_col = st.columns([3, 1])
 
 with title_col:
-    st.title(f"MoneyPrinterTurbo v{config.project_version}")
+    st.title(f"moneyphanhoang v{config.project_version}")
 
 with lang_col:
     display_languages = []
@@ -246,25 +245,24 @@ def read_recent_log_lines(file_path: str, max_lines: int = 400) -> str:
 
 
 def render_live_log_viewer():
-    with st.expander("Live Server Logs", expanded=False):
+    with st.expander(tr("Live Server Logs"), expanded=False):
         st.caption(
-            "Persistent logs from storage/logs/webui.log. "
-            "Use Refresh after page reloads or while a task is running."
+            tr("Persistent logs from storage/logs/webui.log. Use Refresh after page reloads or while a task is running.")
         )
         max_lines = st.slider(
-            "Lines to show",
+            tr("Lines to show"),
             min_value=100,
             max_value=2000,
             value=400,
             step=100,
             key="live_log_lines",
         )
-        st.button("Refresh Logs", key="refresh_live_logs")
+        st.button(tr("Refresh Logs"), key="refresh_live_logs")
         log_text = read_recent_log_lines(webui_log_file, max_lines=max_lines)
         if log_text:
             st.code(log_text)
         else:
-            st.info("No persistent log file yet. Start or refresh the app once.")
+            st.info(tr("No persistent log file yet. Start or refresh the app once."))
 
 
 # 创建基础设置折叠框
@@ -557,6 +555,18 @@ if not config.app.get("hide_config", False):
             )
             save_keys_to_config("pixabay_api_keys", pixabay_api_key)
 
+            coverr_api_key = get_keys_from_config("coverr_api_keys")
+            coverr_api_key = st.text_input(
+                tr("Coverr API Key"), value=coverr_api_key, type="password"
+            )
+            save_keys_to_config("coverr_api_keys", coverr_api_key)
+
+            videvo_api_key = get_keys_from_config("videvo_api_keys")
+            videvo_api_key = st.text_input(
+                tr("Videvo API Key"), value=videvo_api_key, type="password"
+            )
+            save_keys_to_config("videvo_api_keys", videvo_api_key)
+
 llm_provider = config.app.get("llm_provider", "").lower()
 panel = st.columns(3)
 left_panel = panel[0]
@@ -638,9 +648,9 @@ with middle_panel:
         video_sources = [
             (tr("Pexels"), "pexels"),
             (tr("Pixabay"), "pixabay"),
-            ("Coverr (free, API key)", "coverr"),
-            ("Videvo (partner API)", "videvo"),
-            ("Mixkit (HTML scrape, best-effort)", "mixkit"),
+            (tr("Coverr (free, API key)"), "coverr"),
+            (tr("Videvo (partner API)"), "videvo"),
+            (tr("Mixkit (HTML scrape, best-effort)"), "mixkit"),
             (tr("Local file"), "local"),
             (tr("TikTok"), "douyin"),
             (tr("Bilibili"), "bilibili"),
@@ -668,18 +678,16 @@ with middle_panel:
             # Streamlit 的文件类型校验对扩展名大小写敏感，这里同时放行大小写两种形式。
             local_file_types = ["mp4", "mov", "avi", "flv", "mkv", "jpg", "jpeg", "png"]
             uploaded_files = st.file_uploader(
-                "Upload Local Files",
+                tr("Upload Local Files"),
                 type=local_file_types + [file_type.upper() for file_type in local_file_types],
                 accept_multiple_files=True,
             )
             current_drop_dir = (config.app.get("material_directory") or "").strip()
             new_drop_dir = st.text_input(
-                "Or: drop-folder path (config.material_directory)",
+                tr("Or: drop-folder path (config.material_directory)"),
                 value=current_drop_dir,
                 help=(
-                    "If you don't upload files here, the pipeline will pick "
-                    "every mp4/mov/mkv/webm under this folder. "
-                    "Useful for reusing purchased Shutterstock / Adobe Stock / Getty clips."
+                    tr("If you don't upload files here, the pipeline will pick every mp4/mov/mkv/webm under this folder. Useful for reusing purchased Shutterstock / Adobe Stock / Getty clips.")
                 ),
             )
             if new_drop_dir != current_drop_dir:
@@ -1054,12 +1062,12 @@ with right_panel:
         with stroke_cols[1]:
             params.stroke_width = st.slider(tr("Stroke Width"), 0.0, 10.0, 1.5)
     with st.expander(tr("Click to show API Key management"), expanded=False):
-        st.subheader(tr("Manage Pexels and Pixabay API Keys"))
+        st.subheader(tr("Manage API Keys"))
 
-        col1, col2 = st.tabs(["Pexels API Keys", "Pixabay API Keys"])
+        col1, col2, col3, col4 = st.tabs([tr("Pexels"), tr("Pixabay"), "Coverr", "Videvo"])
 
         with col1:
-            st.subheader("Pexels API Keys")
+            st.subheader(tr("Pexels API Keys"))
             if config.app["pexels_api_keys"]:
                 st.write(tr("Current Keys:"))
                 for key in config.app["pexels_api_keys"]:
@@ -1088,7 +1096,7 @@ with right_panel:
                     st.success(tr("Pexels API Key deleted successfully"))
 
         with col2:
-            st.subheader("Pixabay API Keys")
+            st.subheader(tr("Pixabay API Keys"))
 
             if config.app["pixabay_api_keys"]:
                 st.write(tr("Current Keys:"))
@@ -1117,27 +1125,59 @@ with right_panel:
                     config.save_config()
                     st.success(tr("Pixabay API Key deleted successfully"))
 
+        for tab, cfg_key, label in [
+            (col3, "coverr_api_keys", "Coverr"),
+            (col4, "videvo_api_keys", "Videvo"),
+        ]:
+            with tab:
+                config.app.setdefault(cfg_key, [])
+                st.subheader(tr(f"{label} API Keys"))
+                if config.app[cfg_key]:
+                    st.write(tr("Current Keys:"))
+                    for key in config.app[cfg_key]:
+                        st.code(key)
+                else:
+                    st.info(tr(f"No {label} API Keys currently"))
+
+                new_key = st.text_input(tr(f"Add {label} API Key"), key=f"{cfg_key}_new_key")
+                if st.button(tr(f"Add {label} API Key"), key=f"{cfg_key}_add_button"):
+                    if new_key and new_key not in config.app[cfg_key]:
+                        config.app[cfg_key].append(new_key)
+                        config.save_config()
+                        st.success(tr(f"{label} API Key added successfully"))
+                    elif new_key in config.app[cfg_key]:
+                        st.warning(tr("This API Key already exists"))
+                    else:
+                        st.error(tr("Please enter a valid API Key"))
+
+                if config.app[cfg_key]:
+                    delete_key = st.selectbox(
+                        tr(f"Select {label} API Key to delete"),
+                        config.app[cfg_key],
+                        key=f"{cfg_key}_delete_key",
+                    )
+                    if st.button(tr(f"Delete Selected {label} API Key"), key=f"{cfg_key}_delete_button"):
+                        config.app[cfg_key].remove(delete_key)
+                        config.save_config()
+                        st.success(tr(f"{label} API Key deleted successfully"))
+
 with st.container(border=True):
-    st.write("**Long-form mode (moneyPrinterTurbo_Long)**")
+    st.write(tr("Long-form mode (moneyphanhoang)"))
     long_form_enabled = st.checkbox(
-        "Generate long-form video (chunked LLM script + chunked TTS + ffmpeg fast assembly)",
+        tr("Generate long-form video (chunked LLM script + chunked TTS + ffmpeg fast assembly)"),
         value=bool(config.app.get("long_form", False)),
         help=(
-            "Enables the long-form pipeline: scripts are written chapter-by-chapter "
-            "(no LLM token limit), TTS is split into multiple Edge-TTS calls and "
-            "concatenated with ffmpeg, and video assembly skips MoviePy's per-clip "
-            "re-encode. Use for 30+ minute outputs."
+            tr("Enables the long-form pipeline: scripts are written chapter-by-chapter (no LLM token limit), TTS is split into multiple Edge-TTS calls and concatenated with ffmpeg, and video assembly skips MoviePy's per-clip re-encode. Use for 30+ minute outputs.")
         ),
     )
     target_minutes = st.number_input(
-        "Target length (minutes)",
+        tr("Target length (minutes)"),
         min_value=1.0,
         max_value=180.0,
         value=float(config.app.get("long_form_target_minutes", 30.0)),
         step=5.0,
         help=(
-            "Desired final video length. Only used when long-form is enabled and "
-            "no custom script is provided. The chapter outline scales with this value."
+            tr("Desired final video length. Only used when long-form is enabled and no custom script is provided. The chapter outline scales with this value.")
         ),
     )
     params.long_form = bool(long_form_enabled)
@@ -1146,11 +1186,13 @@ with st.container(border=True):
     config.app["long_form_target_minutes"] = params.target_minutes
     if params.long_form:
         st.info(
-            f"Long-form ON. Script target ≈ {int(target_minutes)} min "
-            f"(~{int(target_minutes * 150)} words). "
-            "Pre-fill `material_directory` with hundreds of clips if you want "
-            "good visual variety — Pexels/Pixabay/Coverr likely won't yield "
-            "enough unique footage for hour-long videos."
+            tr("Long-form ON. Script target")
+            + f" ≈ {int(target_minutes)} "
+            + tr("minutes")
+            + f" (~{int(target_minutes * 150)} "
+            + tr("words")
+            + "). "
+            + tr("Pre-fill material_directory with hundreds of clips if you want good visual variety — Pexels/Pixabay/Coverr likely won't yield enough unique footage for hour-long videos.")
         )
 
 render_live_log_viewer()
@@ -1181,12 +1223,12 @@ if start_button:
         st.stop()
 
     if params.video_source == "coverr" and not config.app.get("coverr_api_keys", ""):
-        st.error("Please set coverr_api_keys in config.toml (get one at coverr.co/developers).")
+        st.error(tr("Please set coverr_api_keys in config.toml (get one at coverr.co/developers)."))
         scroll_to_bottom()
         st.stop()
 
     if params.video_source == "videvo" and not config.app.get("videvo_api_keys", ""):
-        st.error("Please set videvo_api_keys in config.toml (partner API access required).")
+        st.error(tr("Please set videvo_api_keys in config.toml (partner API access required)."))
         scroll_to_bottom()
         st.stop()
 
