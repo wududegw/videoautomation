@@ -1,58 +1,58 @@
 [app]
 video_source = "pexels" # "pexels" or "pixabay"
 
-# 是否隐藏配置面板
+# Có ẩn bảng cấu hình trong WebUI hay không
 hide_config = false
 
-# Azure TTS V1(edge_tts) 单次流式请求超时时间，单位秒。
-# 网络异常、服务端限流或 voice 与文本语言不匹配时，edge_tts 可能长期卡住。
-# 默认 30 秒可避免 WebUI 任务无反馈；慢网络或代理环境可适当调大。
-# 设置为 0 表示禁用超时。
+# Thời gian chờ cho mỗi request streaming Azure TTS V1/edge_tts, tính bằng giây.
+# Khi mạng lỗi, server giới hạn tốc độ hoặc voice không khớp ngôn ngữ, edge_tts có thể bị treo lâu.
+# Mặc định 30 giây để WebUI không treo im lặng; mạng chậm/proxy có thể tăng thêm.
+# Đặt 0 để tắt timeout.
 edge_tts_timeout = 30
 
-# 是否校验外部 API 和素材下载的 TLS 证书。
-# 默认必须开启，避免 Pexels/Pixabay API key 和下载素材被中间人攻击篡改。
-# 只有在企业代理或自签证书环境明确需要时，才临时改为 false。
+# Có kiểm tra chứng chỉ TLS khi gọi API ngoài và tải tư liệu hay không.
+# Mặc định nên bật để tránh API key/tư liệu tải về bị can thiệp.
+# Chỉ tạm đặt false nếu dùng proxy doanh nghiệp hoặc chứng chỉ tự ký.
 tls_verify = true
 
 # Pexels API Key
 # Register at https://www.pexels.com/api/ to get your API key.
 # You can use multiple keys to avoid rate limits.
 # For example: pexels_api_keys = ["123adsf4567adf89","abd1321cd13efgfdfhi"]
-# 特别注意格式，Key 用英文双引号括起来，多个Key用逗号隔开
+# Lưu ý định dạng: key đặt trong dấu nháy kép, nhiều key ngăn cách bằng dấu phẩy.
 pexels_api_keys = []
 
 # Pixabay API Key
 # Register at https://pixabay.com/api/docs/ to get your API key.
 # You can use multiple keys to avoid rate limits.
 # For example: pixabay_api_keys = ["123adsf4567adf89","abd1321cd13efgfdfhi"]
-# 特别注意格式，Key 用英文双引号括起来，多个Key用逗号隔开
+# Lưu ý định dạng: key đặt trong dấu nháy kép, nhiều key ngăn cách bằng dấu phẩy.
 pixabay_api_keys = []
 
-# Coverr API Key (moneyPrinterTurbo_Long edition)
+# Coverr API Key (videoautomation edition)
 # Free tier: 50 req/hour. Register at https://coverr.co/developers
 # Coverr API documentation: https://api.coverr.co/docs/
 # Multiple keys can be used to round-robin and lift the hourly cap.
 coverr_api_keys = []
 
-# Videvo API Key (moneyPrinterTurbo_Long edition)
+# Videvo API Key (videoautomation edition)
 # Partner API access required — apply via https://www.videvo.net
 # Override `videvo_base_url` if your account uses a different endpoint.
 videvo_api_keys = []
 # videvo_base_url = "https://www.videvo.net/api/v1/search/"
 
-# Local material drop-folder (moneyPrinterTurbo_Long edition)
+# Local material drop-folder (videoautomation edition)
 # When `video_source = "local"` and the WebUI didn't receive uploads,
 # every mp4/mov/mkv/webm under this directory is used as material.
 # Use this to reuse Shutterstock / Adobe Stock / Getty clips you bought.
 # Example (Windows): material_directory = "D:\\stock-footage\\earth-science"
 material_directory = ""
 
-# 支持的提供商 (Supported providers):
+# Nhà cung cấp LLM được hỗ trợ:
 #   openai
-#   moonshot    (月之暗面)
+#   moonshot
 #   azure
-#   qwen        (通义千问)
+#   qwen
 #   deepseek
 #   gemini
 #   ollama
@@ -60,8 +60,8 @@ material_directory = ""
 #   oneapi
 #   cloudflare
 #   minimax
-#   ernie       (文心一言)
-#   modelscope  (魔搭社区)
+#   ernie
+#   modelscope
 #   litellm     (100+ providers via LiteLLM gateway)
 llm_provider = "openai"
 
@@ -225,7 +225,7 @@ endpoint = ""
 # material_directory = "/user/harry/videos"  # Indicates that video materials will be downloaded to a specified folder
 # material_directory = "task"                # Indicates that video materials will be downloaded to the current task's folder, this method does not allow sharing of already downloaded video materials
 
-# 视频素材存放位置
+# Thư mục lưu tư liệu video
 # material_directory = ""                    #表示将视频素材下载到默认的文件夹，默认文件夹为当前项目下的 ./storage/cache_videos
 # material_directory = "/user/harry/videos"  #表示将视频素材下载到指定的文件夹中
 # material_directory = "task"                #表示将视频素材下载到当前任务的文件夹中，这种方式无法共享已经下载的视频素材
@@ -284,9 +284,9 @@ speech_region = ""
 api_key = ""
 
 [ui]
-# UI related settings
-# 是否隐藏日志信息
-# Whether to hide logs in the UI
+# Cấu hình giao diện
+# Có ẩn log trong giao diện hay không
+# Ẩn log trong WebUI
 hide_log = false
 
 # Ngôn ngữ giao diện mặc định. Dùng "vi" cho tiếng Việt.

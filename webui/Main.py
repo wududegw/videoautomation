@@ -27,15 +27,15 @@ from app.services import task as tm
 from app.utils import utils
 
 st.set_page_config(
-    page_title="moneyphanhoang",
+    page_title="videoautomation",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="auto",
     menu_items={
-        "Report a bug": "https://github.com/harry0703/MoneyPrinterTurbo/issues",
-        "About": "# moneyphanhoang\nBản Việt hóa/nâng cấp từ MoneyPrinterTurbo: tự động tạo kịch bản, "
-        "tìm/tải tư liệu video, tạo phụ đề, lồng tiếng và ghép thành video.\n\n"
-        "Fork gốc: https://github.com/harry0703/MoneyPrinterTurbo",
+        "Report a bug": "https://github.com/wududegw/videoautomation/issues",
+        "About": "# videoautomation\nCông cụ tự động hóa tạo video tiếng Việt: viết kịch bản, "
+        "tạo giọng đọc, phụ đề, lấy tư liệu và ghép thành video hoàn chỉnh.\n\n"
+        "GitHub: https://github.com/wududegw/videoautomation",
     },
 )
 
@@ -49,7 +49,7 @@ h1 {
 """
 st.markdown(streamlit_style, unsafe_allow_html=True)
 
-# 定义资源目录
+# Khai báo thư mục tài nguyên
 font_dir = os.path.join(root_dir, "resource", "fonts")
 song_dir = os.path.join(root_dir, "resource", "songs")
 i18n_dir = os.path.join(root_dir, "webui", "i18n")
@@ -68,17 +68,17 @@ if "video_terms" not in st.session_state:
 if "ui_language" not in st.session_state:
     st.session_state["ui_language"] = config.ui.get("language", "vi") or system_locale
 if "local_video_materials" not in st.session_state:
-    # 记住用户最近一次已经落盘的本地素材，避免仅修改文案后二次生成时丢失素材列表。
+    # Ghi nhớ tư liệu local đã lưu để không bị mất khi chỉ chỉnh nội dung rồi tạo lại.
     st.session_state["local_video_materials"] = []
 
-# 加载语言文件
+# Tải file ngôn ngữ
 locales = utils.load_locales(i18n_dir)
 
-# 创建一个顶部栏，包含标题和语言选择
+# Tạo thanh trên cùng gồm tiêu đề và lựa chọn ngôn ngữ
 title_col, lang_col = st.columns([3, 1])
 
 with title_col:
-    st.title(f"moneyphanhoang v{config.project_version}")
+    st.title(f"videoautomation v{config.project_version}")
 
 with lang_col:
     display_languages = []
@@ -340,12 +340,12 @@ if not config.app.get("hide_config", False):
 
                 with llm_helper:
                     tips = """
-                            ##### Ollama配置说明
-                            - **API Key**: 随便填写，比如 123
-                            - **Base Url**: 一般为 http://localhost:11434/v1
-                                - 如果 `MoneyPrinterTurbo` 和 `Ollama` **不在同一台机器上**，需要填写 `Ollama` 机器的IP地址
-                                - 如果 `MoneyPrinterTurbo` 是 `Docker` 部署，建议填写 `http://host.docker.internal:11434/v1`
-                            - **Model Name**: 使用 `ollama list` 查看，比如 `qwen:7b`
+                            ##### Hướng dẫn cấu hình Ollama
+                            - **API Key**: có thể nhập giá trị bất kỳ, ví dụ `123`.
+                            - **Base Url**: thường là `http://localhost:11434/v1`.
+                                - Nếu `videoautomation` và `Ollama` không chạy cùng máy, hãy nhập IP của máy chạy Ollama.
+                                - Nếu chạy `videoautomation` bằng Docker, nên dùng `http://host.docker.internal:11434/v1`.
+                            - **Model Name**: dùng `ollama list` để xem tên model, ví dụ `qwen:7b`.
                             """
 
             if llm_provider == "openai":
@@ -353,11 +353,10 @@ if not config.app.get("hide_config", False):
                     llm_model_name = "gpt-3.5-turbo"
                 with llm_helper:
                     tips = """
-                            ##### OpenAI 配置说明
-                            > 需要VPN开启全局流量模式
-                            - **API Key**: [点击到官网申请](https://platform.openai.com/api-keys)
-                            - **Base Url**: 官方 OpenAI 可留空；如果使用 OpenAI 兼容供应商（例如 OpenRouter），请填写对应的兼容接口地址
-                            - **Model Name**: 填写**有权限**的模型；如果使用兼容供应商，请填写该平台支持的模型 ID
+                            ##### Hướng dẫn cấu hình OpenAI
+                            - **API Key**: lấy tại [trang API keys của OpenAI](https://platform.openai.com/api-keys).
+                            - **Base Url**: có thể để trống nếu dùng OpenAI chính thức; nếu dùng nhà cung cấp tương thích OpenAI, hãy nhập endpoint tương ứng.
+                            - **Model Name**: nhập model mà tài khoản của bạn có quyền sử dụng.
                             """
 
             if llm_provider == "moonshot":
@@ -365,22 +364,22 @@ if not config.app.get("hide_config", False):
                     llm_model_name = "moonshot-v1-8k"
                 with llm_helper:
                     tips = """
-                            ##### Moonshot 配置说明
-                            - **API Key**: [点击到官网申请](https://platform.moonshot.cn/console/api-keys)
-                            - **Base Url**: 固定为 https://api.moonshot.cn/v1
-                            - **Model Name**: 比如 moonshot-v1-8k，[点击查看模型列表](https://platform.moonshot.cn/docs/intro#%E6%A8%A1%E5%9E%8B%E5%88%97%E8%A1%A8)
+                            ##### Hướng dẫn cấu hình Moonshot
+                            - **API Key**: lấy tại https://platform.moonshot.cn/console/api-keys
+                            - **Base Url**: `https://api.moonshot.cn/v1`
+                            - **Model Name**: ví dụ `moonshot-v1-8k`.
                             """
             if llm_provider == "oneapi":
                 if not llm_model_name:
                     llm_model_name = (
-                        "claude-3-5-sonnet-20240620"  # 默认模型，可以根据需要调整
+                        "claude-3-5-sonnet-20240620"  # Model mặc định, có thể đổi theo nhu cầu
                     )
                 with llm_helper:
                     tips = """
-                        ##### OneAPI 配置说明
-                        - **API Key**: 填写您的 OneAPI 密钥
-                        - **Base Url**: 填写 OneAPI 的基础 URL
-                        - **Model Name**: 填写您要使用的模型名称，例如 claude-3-5-sonnet-20240620
+                        ##### Hướng dẫn cấu hình OneAPI
+                        - **API Key**: nhập khóa OneAPI của bạn.
+                        - **Base Url**: nhập địa chỉ OneAPI gateway.
+                        - **Model Name**: nhập tên model muốn dùng, ví dụ `claude-3-5-sonnet-20240620`.
                         """
 
             if llm_provider == "qwen":
@@ -388,10 +387,10 @@ if not config.app.get("hide_config", False):
                     llm_model_name = "qwen-max"
                 with llm_helper:
                     tips = """
-                            ##### 通义千问Qwen 配置说明
-                            - **API Key**: [点击到官网申请](https://dashscope.console.aliyun.com/apiKey)
-                            - **Base Url**: 留空
-                            - **Model Name**: 比如 qwen-max，[点击查看模型列表](https://help.aliyun.com/zh/dashscope/developer-reference/model-introduction#3ef6d0bcf91wy)
+                            ##### Hướng dẫn cấu hình Qwen
+                            - **API Key**: lấy tại https://dashscope.console.aliyun.com/apiKey
+                            - **Base Url**: để trống nếu dùng endpoint mặc định.
+                            - **Model Name**: ví dụ `qwen-max`.
                             """
 
             if llm_provider == "g4f":
@@ -399,20 +398,19 @@ if not config.app.get("hide_config", False):
                     llm_model_name = "gpt-3.5-turbo"
                 with llm_helper:
                     tips = """
-                            ##### gpt4free 配置说明
-                            > [GitHub开源项目](https://github.com/xtekky/gpt4free)，可以免费使用GPT模型，但是**稳定性较差**
-                            - **API Key**: 随便填写，比如 123
-                            - **Base Url**: 留空
-                            - **Model Name**: 比如 gpt-3.5-turbo，[点击查看模型列表](https://github.com/xtekky/gpt4free/blob/main/g4f/models.py#L308)
+                            ##### Hướng dẫn cấu hình gpt4free
+                            > Provider này miễn phí nhưng độ ổn định thấp; chỉ nên dùng thử nghiệm.
+                            - **API Key**: có thể nhập giá trị bất kỳ, ví dụ `123`.
+                            - **Base Url**: để trống.
+                            - **Model Name**: ví dụ `gpt-3.5-turbo`.
                             """
             if llm_provider == "azure":
                 with llm_helper:
                     tips = """
-                            ##### Azure 配置说明
-                            > [点击查看如何部署模型](https://learn.microsoft.com/zh-cn/azure/ai-services/openai/how-to/create-resource)
-                            - **API Key**: [点击到Azure后台创建](https://portal.azure.com/#view/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/~/OpenAI)
-                            - **Base Url**: 留空
-                            - **Model Name**: 填写你实际的部署名
+                            ##### Hướng dẫn cấu hình Azure OpenAI
+                            - **API Key**: tạo trong Azure Portal.
+                            - **Base Url**: để trống nếu đã cấu hình qua biến khác; nếu dùng endpoint riêng, nhập endpoint Azure của bạn.
+                            - **Model Name**: nhập deployment name thực tế trên Azure.
                             """
 
             if llm_provider == "gemini":
@@ -421,11 +419,10 @@ if not config.app.get("hide_config", False):
 
                 with llm_helper:
                     tips = """
-                            ##### Gemini 配置说明
-                            > 需要VPN开启全局流量模式
-                            - **API Key**: [点击到官网申请](https://ai.google.dev/)
-                            - **Base Url**: 留空
-                            - **Model Name**: 比如 gemini-1.0-pro
+                            ##### Hướng dẫn cấu hình Gemini
+                            - **API Key**: lấy tại https://ai.google.dev/
+                            - **Base Url**: để trống nếu dùng endpoint mặc định.
+                            - **Model Name**: ví dụ `gemini-1.0-pro` hoặc model bạn có quyền dùng.
                             """
 
             if llm_provider == "deepseek":
@@ -435,10 +432,10 @@ if not config.app.get("hide_config", False):
                     llm_base_url = "https://api.deepseek.com"
                 with llm_helper:
                     tips = """
-                            ##### DeepSeek 配置说明
-                            - **API Key**: [点击到官网申请](https://platform.deepseek.com/api_keys)
-                            - **Base Url**: 固定为 https://api.deepseek.com
-                            - **Model Name**: 固定为 deepseek-chat
+                            ##### Hướng dẫn cấu hình DeepSeek
+                            - **API Key**: lấy tại https://platform.deepseek.com/api_keys
+                            - **Base Url**: `https://api.deepseek.com`
+                            - **Model Name**: thường dùng `deepseek-chat`.
                             """
 
             if llm_provider == "modelscope":
@@ -448,19 +445,19 @@ if not config.app.get("hide_config", False):
                     llm_base_url = "https://api-inference.modelscope.cn/v1/"
                 with llm_helper:
                     tips = """
-                            ##### ModelScope 配置说明
-                            - **API Key**: [点击到官网申请](https://modelscope.cn/docs/model-service/API-Inference/intro)
-                            - **Base Url**: 固定为 https://api-inference.modelscope.cn/v1/
-                            - **Model Name**: 比如 Qwen/Qwen3-32B，[点击查看模型列表](https://modelscope.cn/models?filter=inference_type&page=1)
+                            ##### Hướng dẫn cấu hình ModelScope
+                            - **API Key**: lấy trong tài khoản ModelScope của bạn.
+                            - **Base Url**: `https://api-inference.modelscope.cn/v1/`
+                            - **Model Name**: ví dụ `Qwen/Qwen3-32B`.
                             """
 
             if llm_provider == "ernie":
                 with llm_helper:
                     tips = """
-                            ##### 百度文心一言 配置说明
-                            - **API Key**: [点击到官网申请](https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application)
-                            - **Secret Key**: [点击到官网申请](https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application)
-                            - **Base Url**: 填写 **请求地址** [点击查看文档](https://cloud.baidu.com/doc/WENXINWORKSHOP/s/jlil56u11#%E8%AF%B7%E6%B1%82%E8%AF%B4%E6%98%8E)
+                            ##### Hướng dẫn cấu hình ERNIE
+                            - **API Key**: nhập API key của ứng dụng ERNIE/Qianfan.
+                            - **Secret Key**: nhập secret key tương ứng.
+                            - **Base Url**: nhập request endpoint mà tài khoản của bạn được cấp.
                             """
 
             if llm_provider == "pollinations":
@@ -1162,7 +1159,7 @@ with right_panel:
                         st.success(tr(f"{label} API Key deleted successfully"))
 
 with st.container(border=True):
-    st.write(tr("Long-form mode (moneyphanhoang)"))
+    st.write(tr("Long-form mode (videoautomation)"))
     long_form_enabled = st.checkbox(
         tr("Generate long-form video (chunked LLM script + chunked TTS + ffmpeg fast assembly)"),
         value=bool(config.app.get("long_form", False)),

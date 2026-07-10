@@ -1033,7 +1033,7 @@ wheels = [
 ]
 
 [[package]]
-name = "moneyprinterturbo"
+name = "videoautomation"
 version = "1.2.7"
 source = { virtual = "." }
 dependencies = [

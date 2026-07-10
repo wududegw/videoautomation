@@ -137,7 +137,7 @@
     "Upload Local Files": "Tải tệp cục bộ lên",
     "Or: drop-folder path (config.material_directory)": "Hoặc: đường dẫn thư mục chứa tư liệu (config.material_directory)",
     "If you don't upload files here, the pipeline will pick every mp4/mov/mkv/webm under this folder. Useful for reusing purchased Shutterstock / Adobe Stock / Getty clips.": "Nếu bạn không tải tệp lên ở đây, pipeline sẽ lấy mọi tệp mp4/mov/mkv/webm trong thư mục này. Hữu ích khi tái sử dụng clip đã mua/có bản quyền từ Shutterstock / Adobe Stock / Getty.",
-    "Long-form mode (moneyphanhoang)": "**Chế độ video dài (moneyphanhoang)**",
+    "Long-form mode (videoautomation)": "**Chế độ video dài (videoautomation)**",
     "Generate long-form video (chunked LLM script + chunked TTS + ffmpeg fast assembly)": "Tạo video dài (chia nhỏ kịch bản LLM + chia nhỏ TTS + ghép nhanh bằng ffmpeg)",
     "Enables the long-form pipeline: scripts are written chapter-by-chapter (no LLM token limit), TTS is split into multiple Edge-TTS calls and concatenated with ffmpeg, and video assembly skips MoviePy's per-clip re-encode. Use for 30+ minute outputs.": "Bật pipeline video dài: kịch bản được viết theo từng chương (giảm giới hạn token LLM), TTS được chia thành nhiều lần gọi Edge-TTS rồi ghép bằng ffmpeg, còn video bỏ qua bước mã hóa lại từng clip của MoviePy. Dùng cho video từ 30 phút trở lên.",
     "Target length (minutes)": "Thời lượng mục tiêu (phút)",

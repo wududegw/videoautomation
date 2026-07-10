@@ -2,7 +2,7 @@
 setlocal
 
 rem ============================================================
-rem  MoneyPrinterTurbo (Long) - stop & restart the WebUI
+rem  videoautomation (Long) - stop & restart the WebUI
 rem  Double-click this file, or run: .\restart.bat
 rem ============================================================
 

@@ -1,15 +1,15 @@
-# 说明：
-# 1. 主依赖来源统一收敛到 pyproject.toml。
-# 2. 运行环境通过 uv.lock 固定，避免不同机器解析出不同版本组合。
+# Ghi chú:
+# 1. Dependency chính được quản lý trong pyproject.toml.
+# 2. uv.lock giúp cố định phiên bản để môi trường ổn định.
 [build-system]
 requires = ["hatchling>=1.27.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "moneyprinterturbo"
+name = "videoautomation"
 version = "1.2.7"
-description = "Generate short videos from prompts, local assets, subtitles, and TTS."
-readme = "README-en.md"
+description = "Vietnamese-first video automation tool for scripts, voice, subtitles, and video assembly."
+readme = "README.md"
 requires-python = ">=3.11,<3.13"
 license = { text = "MIT" }
 dependencies = [
@@ -42,5 +42,5 @@ g4f = [
 packages = ["app"]
 
 [tool.uv]
-# 当前项目以应用运行形态为主，不作为可发布的 Python 包安装。
+# Dự án chủ yếu chạy như ứng dụng, không ưu tiên publish package Python.
 package = false
